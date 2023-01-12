@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import Bird from '../assets/images/flappy.png'
+import Bird from "../assets/images/flappy.png";
 
 interface RectangleProps {
   x: number;
@@ -15,38 +15,44 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
   width,
   height,
 }) => {
+
   const [rectangle, setRectangle] = useState({ x, y });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState<boolean>(false);
 
-  useEffect(() => {
-    let animationFrameId: number;
-
-    function updateRectangle() {
-      setRectangle((prevRectangle) => ({
-        x: prevRectangle.x + velocity.x,
-        y: prevRectangle.y + velocity.y,
-      }));
-      animationFrameId = requestAnimationFrame(updateRectangle);
-    }
-
-    animationFrameId = requestAnimationFrame(updateRectangle);
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [velocity]);
-
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+  // handle key pressed
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "w":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, y: -1 }));
+        setVelocity((prevVelocity) => ({ ...prevVelocity, y: -3 }));
+        setIsMoving(true);
         break;
       case "a":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, x: -1 }));
+        setVelocity((prevVelocity) => ({ ...prevVelocity, x: -3 }));
+        setIsMoving(true);
         break;
       case "s":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, y: 1 }));
+        setVelocity((prevVelocity) => ({ ...prevVelocity, y: 3 }));
+        setIsMoving(true);
         break;
       case "d":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, x: 1 }));
+        setVelocity((prevVelocity) => ({ ...prevVelocity, x: 3 }));
+        setIsMoving(true);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
+  // handle key up so it not pressed anymore
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    switch (event.key) {
+      case "w":
+      case "a":
+      case "s":
+      case "d":
+        setVelocity({ x: 0, y: 0 });
+        setIsMoving(false);
         break;
       default:
         break;
@@ -57,33 +63,43 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
     let animationFrameId: number;
 
     function updateRectangle() {
-      setRectangle((prevRectangle) => ({
-        x: prevRectangle.x + velocity.x,
-        y: prevRectangle.y + velocity.y,
-      }));
-      animationFrameId = requestAnimationFrame(updateRectangle);
+      if (isMoving) {
+        setRectangle((prevRectangle) => ({
+          x: prevRectangle.x + velocity.x,
+          y: prevRectangle.y + velocity.y,
+        }));
+        animationFrameId = requestAnimationFrame(updateRectangle);
+      }
     }
 
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
     animationFrameId = requestAnimationFrame(updateRectangle);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [velocity, handleKeyPress]);
+  }, [isMoving, velocity, handleKeyDown, handleKeyUp]);
 
   return (
-    <div className="bird"
+    <div
+      className="bird"
       style={{
         position: "absolute",
         left: rectangle.x,
         top: rectangle.y,
         width: width,
         height: height,
-        backgroundImage: `url(${Bird})`
       }}
-    ><img src={Bird} alt="bird" style={{maxWidth: '100%;', maxHeight: '100%'}} /></div>
+    >
+      <img
+        src={Bird}
+        alt="bird"
+        style={{ maxWidth: "100%;", maxHeight: "100%" }}
+      />
+    </div>
   );
 };
 
