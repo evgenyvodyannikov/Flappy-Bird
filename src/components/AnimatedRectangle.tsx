@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
+import Bird from '../assets/images/flappy.png'
+
 interface RectangleProps {
   x: number;
   y: number;
@@ -72,16 +74,16 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
   }, [velocity, handleKeyPress]);
 
   return (
-    <div
+    <div className="bird"
       style={{
         position: "absolute",
         left: rectangle.x,
         top: rectangle.y,
         width: width,
         height: height,
-        backgroundColor: "red",
+        backgroundImage: `url(${Bird})`
       }}
-    ></div>
+    ><img src={Bird} alt="bird" style={{maxWidth: '100%;', maxHeight: '100%'}} /></div>
   );
 };
 
