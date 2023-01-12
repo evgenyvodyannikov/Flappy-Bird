@@ -1,28 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import AnimatedRectangle from './components/AnimatedRectangle'
 
 const App: React.FC = () => {
-  const [frame, setFrame] = useState(0);
-
-  useEffect(() => {
-    let animationFrameId: number;
-    let currentFrame = 0;
-
-    function updateFrame() {
-      setFrame(currentFrame);
-      currentFrame++;
-      animationFrameId = requestAnimationFrame(updateFrame);
-    }
-
-    animationFrameId = requestAnimationFrame(updateFrame);
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
   return (
-    <div>
-      Frame: {frame}
-    </div>
-  );
+    <AnimatedRectangle x={0} y={0} width={100} height={100} />
+  )
 }
 
 export default App;
