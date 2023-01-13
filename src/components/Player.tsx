@@ -15,7 +15,7 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
   width,
   height,
 }) => {
-  const [rectangle, setRectangle] = useState({ x, y });
+  const [rectangle, setRectangle] = useState({ x: window.innerWidth / 4, y: window.innerHeight / 2 });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const [isMovingByX, setIsMovingByX] = useState<boolean>(false);
   const [isMovingByY, setIsMovingByY] = useState<boolean>(false);
