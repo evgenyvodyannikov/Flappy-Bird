@@ -15,29 +15,20 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
   width,
   height,
 }) => {
-  const [rectangle, setRectangle] = useState({ x: window.innerWidth / 4, y: window.innerHeight / 2 });
+  const [rectangle, setRectangle] = useState({ x: window.innerWidth / 10, y: window.innerHeight / 2 });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-  const [isMovingByX, setIsMovingByX] = useState<boolean>(false);
-  const [isMovingByY, setIsMovingByY] = useState<boolean>(false);
+  const [isMoving, setIsMoving] = useState<boolean>(false);
 
   // handle key pressed
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "w":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, y: -3 }));
-        setIsMovingByY(true);
+        setVelocity((prevVelocity) => ({ ...prevVelocity, y: -2.5 }));
+        setIsMoving(true);
         break;
       case "s":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, y: 3 }));
-        setIsMovingByY(true);
-        break;
-      case "a":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, x: -3 }));
-        setIsMovingByX(true);
-        break;
-      case "d":
-        setVelocity((prevVelocity) => ({ ...prevVelocity, x: 3 }));
-        setIsMovingByX(true);
+        setVelocity((prevVelocity) => ({ ...prevVelocity, y: 2.5 }));
+        setIsMoving(true);
         break;
       default:
         break;
@@ -49,19 +40,11 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
     switch (event.key) {
       case "w":
         setVelocity({ x: x, y: 0 });
-        setIsMovingByY(false);
+        setIsMoving(false);
         break;
       case "s":
         setVelocity({ x: x, y: 0 });
-        setIsMovingByY(false);
-        break;
-      case "a":
-        setVelocity({ x: 0, y: y });
-        setIsMovingByX(false);
-        break;
-      case "d":
-        setVelocity({ x: 0, y: y });
-        setIsMovingByX(false);
+        setIsMoving(false);
         break;
       default:
         break;
@@ -72,7 +55,7 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
     let animationFrameId: number;
 
     function updateRectangle() {
-      if (isMovingByX || isMovingByY) {
+      if (isMoving) {
         setRectangle((prevRectangle) => ({
           x: prevRectangle.x + velocity.x,
           y: prevRectangle.y + velocity.y,
@@ -90,7 +73,7 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
     };
-  }, [isMovingByX, isMovingByY, velocity, handleKeyDown, handleKeyUp]);
+  }, [isMoving, velocity, handleKeyDown, handleKeyUp]);
 
   return (
     <div
