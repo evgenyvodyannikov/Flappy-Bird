@@ -1,43 +1,55 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import AnimatedRectangle from './Player'
-import MovingBackground from './MovingBackground'
-import BackgroundImage from '../assets/images/background.png'
-import BackgroundImage1 from '../assets/images/background1.png'
-import BackgroundImage2 from '../assets/images/background2.jpg'
+import Player from "./Player";
+import MovingBackground from "./MovingBackground";
 
-const Game: React.FC = () => {
+import BackgroundImage1 from "../assets/images/background1.png";
+import BackgroundImage2 from "../assets/images/background2.jpg";
 
-  const [currentBackground, setCurrentBackground] = useState<string>(BackgroundImage);
+interface GameSettings {
+  playerImage: string;
+  playerBoxWidth: number;
+  playerBoxHeight: number;
+  backgroundImage: string;
+}
+
+const Game: React.FC<GameSettings> = ({
+  playerImage,
+  playerBoxWidth,
+  playerBoxHeight,
+  backgroundImage,
+}) => {
+  const [currentBackground, setCurrentBackground] =
+    useState<string>(backgroundImage);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "c":
-        setCurrentBackground(BackgroundImage1)
+        setCurrentBackground(BackgroundImage1);
         console.log("handled");
         break;
       case "v":
-        setCurrentBackground(BackgroundImage2)
+        setCurrentBackground(BackgroundImage2);
         break;
       default:
         break;
     }
   }, []);
 
-
   useEffect(() => {
-
     document.addEventListener("keydown", handleKeyDown);
-
   }, [handleKeyDown]);
 
   return (
-    <div >
+    <div>
       <MovingBackground imageUrl={currentBackground} />
-      <AnimatedRectangle x={0} y={0} width={75} height={75} />
+      <Player
+        playerImage={playerImage}
+        width={playerBoxWidth}
+        height={playerBoxHeight}
+      />
     </div>
-    
-  )
-}
+  );
+};
 
 export default Game;
