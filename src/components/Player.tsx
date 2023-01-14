@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import Bird from "../assets/images/flappy.png";
-
 interface RectangleProps {
-  x: number;
-  y: number;
+  playerImage: string,
   width: number;
   height: number;
 }
 
 const AnimatedRectangle: React.FC<RectangleProps> = ({
-  x,
-  y,
+  playerImage,
   width,
   height,
 }) => {
@@ -39,11 +35,9 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "w":
-        setVelocity({ x: x, y: 0 });
         setIsMoving(false);
         break;
       case "s":
-        setVelocity({ x: x, y: 0 });
         setIsMoving(false);
         break;
       default:
@@ -87,7 +81,7 @@ const AnimatedRectangle: React.FC<RectangleProps> = ({
       }}
     >
       <img
-        src={Bird}
+        src={playerImage}
         alt="bird"
         style={{ maxWidth: "100%;", maxHeight: "100%" }}
       />
