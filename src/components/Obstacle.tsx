@@ -5,10 +5,12 @@ interface Props {
   posX: number,
   posY: number,
   width: number,
-  height: number
+  height: number,
+  handleUnmount: Function,
+  id: number,
 }
 
-const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height}) => {
+const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height, handleUnmount, id}) => {
   const [x, setX] = useState<number>(posX);
   const [y, setY] = useState<number>(posY);
   const [rectangleRef, setRectangleRef] = useState<HTMLDivElement | null>(null);
@@ -29,7 +31,10 @@ const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height}) => 
         else requestAnimationFrame(animate);
       }
       requestAnimationFrame(animate);
-      return () => setIsActive(false);
+      return () => {
+        setIsActive(false);
+        handleUnmount(id);
+      }
     }
   }, [isActive, rectangleRef]);
 
