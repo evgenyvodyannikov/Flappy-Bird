@@ -22,7 +22,7 @@ const MovingBackground: React.FC<Props> = ({ imageUrl }) => {
     }, []);
 
     return (
-        <div ref={containerRef} className="full" style={{
+        <div ref={containerRef} className="background" style={{
             width: '100vw',
             height: '100vh',
             backgroundImage: `url(${imageUrl})`,
