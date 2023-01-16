@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-interface Props {}
+interface Props {
+  movingSpeed: number,
+  posX: number,
+  posY: number,
+  width: number,
+  height: number
+}
 
-const Test: React.FC<Props> = () => {
-  const [x, setX] = useState<number>(window.innerWidth);
+const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height}) => {
+  const [x, setX] = useState<number>(posX);
+  const [y, setY] = useState<number>(posY);
   const [rectangleRef, setRectangleRef] = useState<HTMLDivElement | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
 
@@ -15,7 +22,7 @@ const Test: React.FC<Props> = () => {
   useEffect(() => {
     if (isActive && rectangleRef) {
       const animate = () => {
-        setX(prevX => prevX - 3);
+        setX(prevX => prevX - movingSpeed);
         if (rectangleRef.getBoundingClientRect().left < 0) {
           setIsActive(false);
         }
@@ -32,10 +39,10 @@ const Test: React.FC<Props> = () => {
         <div
           style={{
             position: 'absolute',
-            left: x,
-            top: 50,
-            width: 100,
-            height: 100,
+            left: x - width,
+            top: y - height,
+            width: width,
+            height: height,
             backgroundColor: 'red'
           }}
           ref={setRectangleRef}
@@ -45,4 +52,4 @@ const Test: React.FC<Props> = () => {
   );
 };
 
-export default Test;
+export default Obstacle;
