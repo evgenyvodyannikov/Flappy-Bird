@@ -13,7 +13,7 @@ const App: React.FC = () => {
         playerImage={PlayerImage}
         playerBoxHeight={75}
         playerBoxWidth={75}
-        obstacleCount={5}
+        obstacleCount={3}
       />
     </div>
   );

@@ -16,6 +16,7 @@ interface GameSettings {
   obstacleCount: number;
 }
 
+
 const Game: React.FC<GameSettings> = ({
   playerImage,
   playerBoxWidth,
@@ -25,7 +26,7 @@ const Game: React.FC<GameSettings> = ({
 }) => {
   const [currentBackground, setCurrentBackground] =
     useState<string>(backgroundImage);
-  const [obstacles, setObstacles] = useState<Array<any>>([]);
+  const [obstacles, setObstacles] = useState<Array<{id: number, movingSpeed: number, posX: number, posY: number, width: number, height: number}>>([]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
@@ -45,32 +46,38 @@ const Game: React.FC<GameSettings> = ({
     setObstacles((prevObstacles) => {
       return prevObstacles.filter((obstacle) => {
         return obstacle.id !== id;
-      })
-    })
-  }
-
+      });
+    });
+  };
 
   useEffect(() => {
-    
-  const SpawnObstacles = () => {
-    console.log(`Obstacles: ${obstacles.length} Need: ${obstacleCount}`);
-    //console.log((obstacles.length <= obstacleCount));
-    if (obstacles.length <= obstacleCount) {
-      for (let i = 0; i < obstacleCount; i++) {
-        let newObstacle = {
-          movingSpeed: Math.random() * (5 - 1) + 1,
-          posX: window.innerWidth,
-          posY: window.innerHeight,
-          width: 100,
-          height: 100,
-          id: i,
-        };
-        obstacles.push(newObstacle);
-        console.log(obstacles.length < obstacleCount);
+
+    setObstacles([]);
+
+    const SpawnObstacles = () => {
+
+      if (obstacles.length < obstacleCount) {
+
+        console.log(obstacles)
+        for (let i = 0; i <= obstacleCount - obstacles.length; i++) {
+
+          let newObstacle = {
+            id: i,
+            movingSpeed: Math.random() * (5 - 1) + 1,
+            posX: window.innerWidth,
+            posY: window.innerHeight,
+            width: 100,
+            height: 100,
+          };
+
+          setObstacles((prev) => {
+            return [...prev, newObstacle]
+          });
+        }
+        
       }
-    }
-    requestAnimationFrame(SpawnObstacles);
-  };
+      requestAnimationFrame(SpawnObstacles);
+    };
 
     SpawnObstacles();
 

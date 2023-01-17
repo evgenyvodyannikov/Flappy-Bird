@@ -18,7 +18,6 @@ const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height, hand
 
   useEffect(() => {
     setIsActive(true);
-    console.log('activated');
   }, []);
 
   useEffect(() => {
@@ -51,7 +50,8 @@ const Obstacle: React.FC<Props> = ({movingSpeed, posX, posY, width, height, hand
             backgroundColor: 'red'
           }}
           ref={setRectangleRef}
-        />
+          id={id as unknown as string} 
+          />
       )}
     </div>
   );
